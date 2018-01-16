@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     step_per_epoch = 50000 // FLAGS.batch_size
     #for i in range(30):
-    for i in range(20):
+    for i in range(40):
         steps = int(step_per_epoch * (i + 1))
         # train 1 epoch
         print('################    train    ################')
@@ -58,10 +58,12 @@ if __name__ == '__main__':
         #                                 'learning_rate': FLAGS.learning_rate, 'optimizer': FLAGS.optimizer,
         #                                 'batch_size': FLAGS.batch_size, 'max_number_of_steps': steps}))
 
-        #hw2
-        if i == 10 :
+        #hw2 : The initial learning rate is set to 0.1, and is divided by 10 at 50% and 75% of the total number of training epochs.
+        if i == 0 :
+            FLAGS.learning_rate = 0.1
+        if i == 20 :
             FLAGS.learning_rate = 0.01
-        elif i == 15 :
+        elif i == 30 :
             FLAGS.learning_rate = 0.001
             
         p = os.popen(train_cmd.format(**{'dataset_name': FLAGS.dataset_name, 'dataset_dir': FLAGS.dataset_dir,
