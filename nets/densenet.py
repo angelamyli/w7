@@ -1,4 +1,11 @@
-"""Contains a variant of the densenet model definition."""
+"""Contains a variant of the densenet model definition.
+
+Implement two kinds of networks accoring to Densely Connected Convolutional Networks.
+
+The value of the parameter database_name of the function densenet determines which network is used.
+
+
+"""
 
 from __future__ import absolute_import
 from __future__ import division
@@ -46,8 +53,8 @@ def block(net, layers, growth, bottleneck, scope='block'):
 def densenet(images,
              num_classes=1001, is_training=True, 
              dataset_name = 'imagenet', layer = 32, 
-             bottleneck=True, compression_rate = 0.5, 
-             compression=True, 
+             bottleneck=True,  compression=True,
+	     compression_rate = 0.5,               
              growth = 24, 
              dropout_keep_prob=0.8, 
              scope='densenet'):
@@ -57,10 +64,15 @@ def densenet(images,
       num_classes: the number of classes in the dataset.
       is_training: specifies whether or not we're currently training the model.
         This variable will determine the behaviour of the dropout layer.
+      dataset_name: set it to 'imagenet' if you want to use the network for imagenet,               otherwise set it to a name that is not 'imagenet'.
+      layer: the number of layers in every dense block of the network that is not for          imagenet.
+      bottleneck: specifies whether or not including bottleneck layers in our network.
+      compression: specifies whether or not reducing the number of feature-maps at                  transition layer.
+      compression_rate: specifies the compression factor when compression is True,                  0 < compression_rate <= 1
+      growth: The number of feature maps each layer (except bottleneck layers) produces in          every dense block.
       dropout_keep_prob: the percentage of activation values that are retained.
-      prediction_fn: a function to get predictions out of logits.
       scope: Optional variable_scope.
-
+      
     Returns:
       logits: the pre-softmax activations, a tensor of size
         [batch_size, `num_classes`]
@@ -251,7 +263,7 @@ def densenet_arg_scope(weight_decay=0.0001):
       weight_decay: The weight decay to use for regularizing the model.
 
     Returns:
-      An `arg_scope` to use for the inception v3 model.
+      An `arg_scope` to use for the densenet model.
     """
     with slim.arg_scope(
         [slim.conv2d],
